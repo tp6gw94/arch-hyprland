@@ -8,6 +8,8 @@
 !ghostty/**
 !yazi/
 !yazi/**
+!mise/
+!mise/**
 
 !.zshrc
 
