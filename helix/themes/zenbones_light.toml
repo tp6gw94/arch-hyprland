@@ -1,0 +1,130 @@
+# Zenbones theme for Helix - Light variant
+# Based on zenbones.vim colorscheme
+
+# UI Elements
+"ui.background" = { bg = "bg" }
+"ui.background.separator" = { fg = "gray5" }
+"ui.text" = { fg = "fg" }
+"ui.text.focus" = { fg = "fg_dark", modifiers = ["bold"] }
+
+# Popups and Menus
+"ui.window" = { fg = "gray5" }
+"ui.popup" = { fg = "fg_dark", bg = "bg_light" }
+"ui.popup.info" = { fg = "fg_dark", bg = "bg" }
+"ui.text.info" = { fg = "fg_dark", bg = "bg" }
+"ui.help" = { fg = "fg_dark", bg = "bg" }
+"ui.menu" = { fg = "fg", bg = "bg_light" }
+"ui.menu.selected" = { fg = "fg_dark", modifiers = ["bold"] }
+"ui.menu.scroll" = { fg = "gray3", bg = "bg_light" }
+"ui.picker.header.column" = { underline.style = "line" }
+
+# Cursor and Selection
+"ui.cursor" = { fg = "bg", bg = "fg" }
+"ui.cursor.insert" = { fg = "bg", bg = "yellow" }
+"ui.cursor.select" = { fg = "bg", bg = "blue" }
+"ui.cursor.match" = { bg = "gray4" }
+"ui.cursor.primary" = { fg = "bg", bg = "fg", modifiers = ["bold"] }
+"ui.cursor.primary.insert" = { fg = "bg", bg = "yellow", modifiers = ["bold"] }
+"ui.cursor.primary.select" = { fg = "bg", bg = "blue", modifiers = ["bold"] }
+"ui.selection" = { bg = "bg_highlight" }
+"ui.selection.primary" = { bg = "bg_highlight" }
+"ui.cursorline.primary" = { bg = "bg_light" }
+"ui.cursorcolumn.primary" = { bg = "bg_light" }
+
+# Line numbers and gutter
+"ui.linenr" = { fg = "gray5" }
+"ui.linenr.selected" = { fg = "fg", modifiers = ["bold"] }
+diff = { fg = "gray3" }
+
+# Statusline and Bufferline
+"ui.bufferline" = { fg = "fg", bg = "bg_statusline" }
+"ui.bufferline.active" = { fg = "bg", bg = "fg" }
+"ui.statusline" = { fg = "fg", bg = "bg_statusline" }
+"ui.statusline.inactive" = { fg = "gray6", bg = "bg_light" }
+"ui.statusline.normal" = { fg = "bg", bg = "fg" }
+"ui.statusline.insert" = { fg = "bg", bg = "yellow" }
+"ui.statusline.select" = { fg = "bg", bg = "blue" }
+"ui.statusline.separator" = { fg = "gray5" }
+
+# Virtual text
+"ui.virtual" = { fg = "gray4" }
+"ui.virtual.ruler" = { bg = "bg_light" }
+"ui.virtual.inlay-hint" = { fg = "gray5", underline.style = "dotted" }
+"ui.virtual.jump-label" = { fg = "fg_dark", modifiers = ["bold"], underline = { style = "curl", color = "blue" } }
+
+# Diagnostics
+error = { fg = "red", modifiers = ["bold"] }
+warning = { fg = "yellow", modifiers = ["bold"] }
+info = { fg = "blue", modifiers = ["bold"] }
+hint = { fg = "cyan", modifiers = ["bold"] }
+"diagnostic.error" = { fg = "red", modifiers = ["bold"] }
+"diagnostic.warning" = { fg = "yellow", modifiers = ["bold"] }
+"diagnostic.info" = { fg = "blue", modifiers = ["bold"] }
+"diagnostic.hint" = { fg = "cyan", modifiers = ["bold"] }
+
+# Code syntax
+comment = { fg = "gray5" }
+keyword = { fg = "fg" }
+operator = { fg = "fg" }
+string = { fg = "teal" }
+constant = { fg = "orange" }
+"string.special.symbol" = { fg = "magenta" }
+variable = { fg = "fg" }
+namespace = { fg = "fg" }
+punctuation = { fg = "fg" }
+"punctuation.delimiter" = { fg = "fg" }
+function = { fg = "fg" }
+attribute = { fg = "fg" }
+tag = { fg = "fg" }
+label = { fg = "fg_dark" }
+constructor = { fg = "fg_dark" }
+type = { fg = "fg" }
+
+# Markup
+"markup.bold" = { modifiers = ["bold"] }
+"markup.italic" = { modifiers = ["italic"] }
+"markup.strikethrough" = { modifiers = ["crossed_out"] }
+"markup.heading" = { fg = "fg_dark", modifiers = ["bold"] }
+"markup.heading.marker" = { fg = "gray3" }
+"markup.list" = { fg = "gray3" }
+"markup.link.url" = { underline.style = "line" }
+"markup.link.label" = { underline.style = "dotted" }
+"markup.quote" = { fg = "gray8" }
+
+# Special highlight for TODO, FIXME, NOTE, HACK, WARNING
+"comment.todo" = { fg = "bg", bg = "cyan", modifiers = ["bold"] }
+"comment.fixme" = { fg = "bg", bg = "red", modifiers = ["bold"] }
+"comment.note" = { fg = "bg", bg = "blue", modifiers = ["bold"] }
+"comment.hack" = { fg = "bg", bg = "magenta", modifiers = ["bold"] }
+"comment.warning" = { fg = "bg", bg = "yellow", modifiers = ["bold"] }
+
+[palette]
+# Light theme colors based on zenbones.vim
+bg = "#FDFDFD"
+bg_light = "#F5F5F5"
+bg_highlight = "#A8D1FF"
+bg_highlight_bright = "#C4B6AF"
+bg_statusline = "#EAEAEA"
+
+fg = "#2C363C"
+fg_dark = "#1C1917"
+
+# Grays
+gray3 = "#BBABA3"
+gray4 = "#A4968F"
+gray5 = "#786D68"
+gray6 = "#948985"
+gray7 = "#8E817B"
+gray8 = "#44525B"
+gray9 = "#6A5549"
+
+# Colors
+red = "#D14C5F"
+green = "#608B4E"
+yellow = "#D79921"
+blue = "#458588"
+magenta = "#B16286"
+cyan = "#689D6A"
+purple = "#8F3F71"
+orange = "#D65D0E"
+teal = "#427B58"
