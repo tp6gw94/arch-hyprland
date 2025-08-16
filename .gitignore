@@ -5,8 +5,9 @@
 !lazygit/
 !lazygit/**
 !ghostty/
-!ghostty/*
-
+!ghostty/**
+!yazi/
+!yazi/**
 
 !.zshrc
 
