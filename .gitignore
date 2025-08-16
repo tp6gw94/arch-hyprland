@@ -1,0 +1,12 @@
+*
+!.gitignore
+!helix/
+!helix/**
+!lazygit/
+!lazygit/**
+!ghostty/
+!ghostty/*
+
+
+!.zshrc
+
