@@ -10,6 +10,8 @@
 !yazi/**
 !mise/
 !mise/**
+!pop-shell/
+!pop-shell/**
 
 !.zshrc
 
