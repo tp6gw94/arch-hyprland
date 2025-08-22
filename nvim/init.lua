@@ -71,7 +71,6 @@ vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
 vim.keymap.set('n', '<leader>z', '<C-w>_<C-w>|')
 vim.keymap.set('n', '<leader>Z', '<C-w>=')
 
-vim.keymap.set('n', '<leader>cf', vim.lsp.buf.format, { desc = "Code Format" })
 vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, { desc = "Code Action" })
 vim.keymap.set('n', '<leader>cA', function() vim.lsp.buf.code_action({ context = { only = { "source" } } }) end)
 vim.keymap.set('n', '<leader>cd', vim.diagnostic.open_float, { desc = "Line Diangostics" })
@@ -107,7 +106,6 @@ end)
 vim.opt.breakindent = true
 
 vim.opt.background = "light"
-
 vim.opt.undofile = true
 
 vim.opt.ignorecase = true
@@ -150,10 +148,16 @@ vim.diagnostic.config({
 require("lazy").setup({
 	spec = {
 		{
+			"folke/lazydev.nvim",
+			ft = "lua",
+			opts = {
+				library = {
+					{ path = "${3rd}/luv/library", words = { "vim%.uv" } },
+				},
+			},
+		},
+		{
 			"zenbones-theme/zenbones.nvim",
-			-- Optionally install Lush. Allows for more configuration or extending the colorscheme
-			-- If you don't want to install lush, make sure to set g:zenbones_compat = 1
-			-- In Vim, compat mode is turned on as Lush only works in Neovim.
 			dependencies = "rktjmp/lush.nvim",
 			lazy = false,
 			priority = 1000,
@@ -161,7 +165,7 @@ require("lazy").setup({
 				vim.g.zenbones = { darken_comments = 45, lightness = 'bright', darken_cursor_line = 20 }
 				vim.cmd("colorscheme zenbones")
 
-				vim.cmd("highlight Visual guibg=#8CC0FF")
+				vim.cmd("highlight Visual guibg=#9acbed")
 			end
 		},
 		{
@@ -215,10 +219,7 @@ require("lazy").setup({
 					["q"] = { "actions.close", mode = "n" }
 				}
 			},
-			-- Optional dependencies
 			dependencies = { { "echasnovski/mini.icons", opts = {} } },
-			-- dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if you prefer nvim-web-devicons
-			-- Lazy loading is not recommended because it is very tricky to make it work correctly in all situations.
 			lazy = false,
 		},
 		{
@@ -254,58 +255,51 @@ require("lazy").setup({
 				vim.lsp.config('vtsls', vtsls_config)
 				vim.lsp.config('vue_ls', vue_ls_config)
 
-				vim.lsp.enable({ "lua_ls", "vtsls", "vue_ls", "eslint", "cspell", "tailwindcss", "csslsp" })
+				vim.lsp.enable({ "lua_ls", "vtsls", "vue_ls", "eslint", "tailwindcss" })
+			end
+		},
+		{
+			'stevearc/conform.nvim',
+			opts = {},
+			config = function()
+				local prettier = { "prettierd", "prettier", sto_after_first = true }
+				local conform = require("conform")
+				conform.setup({
+					formatters_by_ft = {
+						lua = { lsp_format = "first" },
+						javascript = prettier,
+						javascriptreact = prettier,
+						typescript = prettier,
+						typescriptreact = prettier,
+						vue = prettier
+					}
+				})
+				vim.keymap.set("n", "<leader>cf", function(args) conform.format() end)
+			end
+		},
+		{
+			"mfussenegger/nvim-lint",
+			config = function()
+				require('lint').linters_by_ft = {
+					["*"] = { "typoes" },
+				}
 			end
 		},
 		{
 			'saghen/blink.cmp',
-			-- optional: provides snippets for the snippet source
 			dependencies = { 'rafamadriz/friendly-snippets' },
-
-			-- use a release tag to download pre-built binaries
 			version = '1.*',
-			-- AND/OR build from source, requires nightly: https://rust-lang.github.io/rustup/concepts/channels.html#working-with-nightly-rust
-			-- build = 'cargo build --release',
-			-- If you use nix, you can build from source using latest nightly rust with:
-			-- build = 'nix run .#build-plugin',
-
 			---@module 'blink.cmp'
 			---@type blink.cmp.Config
 			opts = {
-				-- 'default' (recommended) for mappings similar to built-in completions (C-y to accept)
-				-- 'super-tab' for mappings similar to vscode (tab to accept)
-				-- 'enter' for enter to accept
-				-- 'none' for no mappings
-				--
-				-- All presets have the following mappings:
-				-- C-space: Open menu or open docs if already open
-				-- C-n/C-p or Up/Down: Select next/previous item
-				-- C-e: Hide menu
-				-- C-k: Toggle signature help (if signature.enabled = true)
-				--
-				-- See :h blink-cmp-config-keymap for defining your own keymap
 				keymap = { preset = 'default' },
-
 				appearance = {
-					-- 'mono' (default) for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
-					-- Adjusts spacing to ensure icons are aligned
 					nerd_font_variant = 'mono'
 				},
-
-				-- (Default) Only show the documentation popup when manually triggered
-				completion = { documentation = { auto_show = false } },
-
-				-- Default list of enabled providers defined so that you can extend it
-				-- elsewhere in your config, without redefining it, due to `opts_extend`
+				completion = { documentation = { auto_show = true } },
 				sources = {
 					default = { 'lsp', 'path', 'snippets', 'buffer' },
 				},
-
-				-- (Default) Rust fuzzy matcher for typo resistance and significantly better performance
-				-- You may use a lua implementation instead by using `implementation = "lua"` or fallback to the lua implementation,
-				-- when the Rust fuzzy matcher is not available, by using `implementation = "prefer_rust"`
-				--
-				-- See the fuzzy documentation for more information
 				fuzzy = { implementation = "prefer_rust_with_warning" }
 			},
 			opts_extend = { "sources.default" }
@@ -328,7 +322,6 @@ require("lazy").setup({
 				for _, ls in ipairs(language_servers) do
 					require('lspconfig')[ls].setup({
 						capabilities = capabilities
-						-- you can add other fields for setting up lsp server in this table
 					})
 				end
 				require('ufo').setup()
@@ -406,6 +399,28 @@ require("lazy").setup({
 				vim.keymap.set("n", "<C-2>", function() harpoon:list():select(2) end)
 				vim.keymap.set("n", "<C-3>", function() harpoon:list():select(3) end)
 				vim.keymap.set("n", "<C-4>", function() harpoon:list():select(4) end)
+				vim.keymap.set("n", "<C-5>", function() harpoon:list():select(5) end)
+			end
+		},
+		{
+			"greggh/claude-code.nvim",
+			dependencies = {
+				"nvim-lua/plenary.nvim", -- Required for git operations
+			},
+			config = function()
+				require("claude-code").setup({
+					window = {
+						position = "float",
+						float = {
+							width = "90%", -- Take up 90% of the editor width
+							height = "90%", -- Take up 90% of the editor height
+							row = "center", -- Center vertically
+							col = "center", -- Center horizontally
+							relative = "editor",
+							border = "double", -- Use double border style
+						},
+					},
+				})
 			end
 		}
 	},
