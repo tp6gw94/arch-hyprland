@@ -1,7 +1,7 @@
 *
 !.gitignore
-!helix/
-!helix/**
+!nvim/
+!nvim/**
 !lazygit/
 !lazygit/**
 !ghostty/
@@ -12,6 +12,9 @@
 !mise/**
 !pop-shell/
 !pop-shell/**
+!wezterm/
+!wezterm/**
 
 !.zshrc
-
+!dump-install-packages.sh
+!install-packages.sh
