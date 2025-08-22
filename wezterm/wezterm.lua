@@ -69,12 +69,12 @@ local act = wezterm.action
 config.keys = {
   -- pane split
   {
-    key = "s",
+    key = "v",
     mods = "LEADER",
     action = act.SplitHorizontal({ domain = "CurrentPaneDomain" }),
   },
   {
-    key = "v",
+    key = "s",
     mods = "LEADER",
     action = act.SplitVertical({ domain = "CurrentPaneDomain" }),
   },
