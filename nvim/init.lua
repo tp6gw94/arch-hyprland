@@ -62,7 +62,7 @@ vim.keymap.set('n', '<leader>bf', "<CMD>Pick buffers<CR>", { desc = "Find Buffer
 vim.keymap.set('n', '<leader>b/', "<CMD>FzfLua blines<CR>", { desc = "Search Current Bufer Line" })
 vim.keymap.set('n', '<leader>/', "<CMD>FzfLua live_grep_native<CR>", { desc = "Grep" })
 vim.keymap.set('n', "<leader>'", "<CMD>FzfLua resume<CR>", { desc = "Resume fzf" })
-vim.keymap.set('n', "<C-p>", "<CMD>FzfLua global<CR>", {desc = "Global Picker"})
+vim.keymap.set('n', "<C-p>", "<CMD>FzfLua global<CR>", { desc = "Global Picker" })
 vim.keymap.set('n', '<leader>bd', '<CMD>bd<CR>', { desc = "Delete Buffer" })
 
 
@@ -158,8 +158,10 @@ require("lazy").setup({
 			lazy = false,
 			priority = 1000,
 			config = function()
-				vim.g.zenbones_darken_comments = 45
-				vim.cmd("colorscheme zenwritten")
+				vim.g.zenbones = { darken_comments = 45, lightness = 'bright', darken_cursor_line = 20 }
+				vim.cmd("colorscheme zenbones")
+
+				vim.cmd("highlight Visual guibg=#8CC0FF")
 			end
 		},
 		{
@@ -226,7 +228,33 @@ require("lazy").setup({
 		{
 			"neovim/nvim-lspconfig",
 			config = function()
-				vim.lsp.enable({ "lua_ls", "vtsls" })
+				local tsserver_filetypes = { 'typescript', 'javascript', 'javascriptreact',
+					'typescriptreact', 'vue' }
+				local vue_language_server_path = vim.fn.expand '$MASON/packages' ..
+				    '/vue-language-server' .. '/node_modules/@vue/language-server'
+				local vue_plugin = {
+					name = '@vue/typescript-plugin',
+					location = vue_language_server_path,
+					languages = { 'vue' },
+					configNamespace = 'typescript',
+				}
+				local vtsls_config = {
+					settings = {
+						vtsls = {
+							tsserver = {
+								globalPlugins = {
+									vue_plugin,
+								},
+							},
+						},
+					},
+					filetypes = tsserver_filetypes,
+				}
+				local vue_ls_config = {}
+				vim.lsp.config('vtsls', vtsls_config)
+				vim.lsp.config('vue_ls', vue_ls_config)
+
+				vim.lsp.enable({ "lua_ls", "vtsls", "vue_ls", "eslint", "cspell", "tailwindcss", "csslsp" })
 			end
 		},
 		{
@@ -381,5 +409,5 @@ require("lazy").setup({
 			end
 		}
 	},
-	install = { colorscheme = { "zenwritten" } }
+	install = { colorscheme = { "zenbones" } }
 })
