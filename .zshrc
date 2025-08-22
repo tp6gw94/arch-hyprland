@@ -1,5 +1,7 @@
 FUNCNEST=1000
 
+xset r rate 200 10
+
 eval "$(zoxide init zsh)"
 eval "$(starship init zsh)"
 eval "$(~/.local/bin/mise activate zsh)"
@@ -7,8 +9,15 @@ eval "$(~/.local/bin/mise activate zsh)"
 alias pn="pnpm"
 alias lg="lazygit"
 alias ld="lazydocker"
+alias so="source ~/.config/.zshrc"
+alias note="zk edit -i -W $HOME/docs"
+alias n="nvim"
 
-function yy() {
+export PATH="$HOME/zk:$PATH"
+export BAT_THEME="base16-256"
+export FZF_DEFAULT_OPTS='--color=bg+:#ffffff,fg+:#000000,hl+:#0066cc'
+
+function y() {
 	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
 	yazi "$@" --cwd-file="$tmp"
 	IFS= read -r -d '' cwd < "$tmp"
