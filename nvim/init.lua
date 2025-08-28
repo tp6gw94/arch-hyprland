@@ -58,13 +58,14 @@ vim.keymap.set('n', '<leader>wd', '<C-W>c', { desc = 'Delete Window', remap = tr
 
 vim.keymap.set('n', '<leader>f', "<CMD>Pick files tool='git'<CR>", { desc = "Find File" })
 
-vim.keymap.set('n', '<leader>bf', "<CMD>Pick buffers<CR>", { desc = "Find Buffer" })
-vim.keymap.set('n', '<leader>b/', "<CMD>FzfLua blines<CR>", { desc = "Search Current Bufer Line" })
+vim.keymap.set('n', '<leader>b', "<CMD>Pick buffers<CR>", { desc = "Find Buffer" })
+vim.keymap.set('n', '<leader>sl', "<CMD>FzfLua blines<CR>", { desc = "Search Current Bufer Line" })
 vim.keymap.set('n', '<leader>/', "<CMD>FzfLua live_grep_native<CR>", { desc = "Grep" })
 vim.keymap.set('n', "<leader>'", "<CMD>FzfLua resume<CR>", { desc = "Resume fzf" })
 vim.keymap.set('n', "<C-p>", "<CMD>FzfLua global<CR>", { desc = "Global Picker" })
-vim.keymap.set('n', '<leader>bd', '<CMD>bd<CR>', { desc = "Delete Buffer" })
+vim.keymap.set('n', '<leader>q', '<CMD>bd<CR>', { desc = "Delete Buffer" })
 
+vim.keymap.set('n', 'U', '<C-r>', { noremap = true })
 
 vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
 
@@ -171,8 +172,19 @@ require("lazy").setup({
 		{
 			'echasnovski/mini.nvim',
 			version = '*',
+			dependencies = { 'JoosepAlviste/nvim-ts-context-commentstring' },
 			config = function()
-				require('mini.comment').setup()
+				require('ts_context_commentstring').setup({
+					enable_autocmd = false,
+				})
+				require('mini.comment').setup {
+					options = {
+						custom_commentstring = function()
+							return require('ts_context_commentstring')
+							    .calculate_commentstring() or vim.bo.commentstring
+						end,
+					},
+				}
 				require('mini.pairs').setup()
 				require('mini.surround').setup({
 					mappings = {
@@ -185,7 +197,11 @@ require("lazy").setup({
 				})
 				require('mini.bracketed').setup()
 				require('mini.diff').setup()
-				require('mini.jump2d').setup()
+				require('mini.jump2d').setup({
+					mappings = {
+						start_jumping = 'ss'
+					}
+				})
 				require('mini.pick').setup()
 				require('mini.cursorword').setup()
 				local hipatterns = require('mini.hipatterns')
@@ -227,12 +243,25 @@ require("lazy").setup({
 			opts = {}
 		},
 		{
+			"nvim-treesitter/nvim-treesitter",
+			branch = 'master',
+			lazy = false,
+			build = ":TSUpdate",
+			config = function()
+				require('nvim-treesitter.configs').setup({
+					ensure_installed = { "vue", "javascript", "typescript", "html", "css" },
+					auto_install = true,
+					highlight = { enable = true },
+				})
+			end
+		},
+		{
 			"neovim/nvim-lspconfig",
 			config = function()
 				local tsserver_filetypes = { 'typescript', 'javascript', 'javascriptreact',
 					'typescriptreact', 'vue' }
-				local vue_language_server_path = vim.fn.expand '$MASON/packages' ..
-				    '/vue-language-server' .. '/node_modules/@vue/language-server'
+				local vue_language_server_path = vim.fn.stdpath('data') ..
+				    "/mason/packages/vue-language-server/node_modules/@vue/language-server"
 				local vue_plugin = {
 					name = '@vue/typescript-plugin',
 					location = vue_language_server_path,
