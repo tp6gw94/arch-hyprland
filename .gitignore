@@ -17,5 +17,7 @@
 !zellij/**
 !waybar/
 !waybar/**
+!scripts/
+!scripts/**
 
 !.zshrc
