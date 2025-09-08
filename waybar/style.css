@@ -1,0 +1,202 @@
+* {
+    font-family: 'JetBrains Mono', 'Noto Sans CJK TC', monospace;
+    font-size: 9px;
+    font-weight: 500;
+}
+
+window#waybar {
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    border: 1px solid #21262d;
+    transition: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+tooltip {
+    background: #161b22;
+    color: #f0f6fc;
+    border-radius: 6px;
+    border: 1px solid #30363d;
+    font-family: 'JetBrains Mono', monospace;
+}
+
+/* 左側模組 */
+#workspaces {
+    margin: 0 8px;
+}
+
+#workspaces button {
+    padding: 0 4px;
+    background-color: transparent;
+    color: #7d8590;
+    border: none;
+    border-radius: 4px;
+    margin: 0 2px;
+    transition: all 0.2s ease;
+}
+
+#workspaces button:hover {
+    background-color: #21262d;
+    color: #f0f6fc;
+}
+
+#workspaces button.active {
+    background-color: #238636;
+    color: #ffffff;
+    font-weight: 600;
+}
+
+#workspaces button.urgent {
+    background-color: #da3633;
+    color: #ffffff;
+}
+
+#window {
+    margin: 0 8px;
+    padding: 0 12px;
+    color: #ffffff;
+    font-weight: 500;
+}
+
+/* 中央時鐘 */
+#clock {
+    color: #f0f6fc;
+    padding: 0 8px;
+    border-radius: 6px;
+    font-weight: 600;
+}
+
+#clock:hover {
+    background-color: #30363d;
+}
+
+/* 右側模組共同樣式 */
+#tray,
+#network,
+#pulseaudio,
+#cpu,
+#memory,
+#backlight,
+#battery {
+    margin: 0 1px;
+    padding: 0 4px;
+    color: #f0f6fc;
+    transition: all 0.2s ease;
+}
+
+#tray:hover,
+#network:hover,
+#pulseaudio:hover,
+#cpu:hover,
+#memory:hover,
+#battery:hover {
+    background-color: #21262d;
+}
+
+/* 音量滑桿樣式 */
+#pulseaudio-slider {
+    margin: 0 4px;
+    padding: 0 8px;
+    border-radius: 4px;
+    min-width: 40px;
+    transition: all 0.2s ease;
+}
+
+#pulseaudio-slider:hover {
+    background-color: #21262d;
+    border-color: #30363d;
+}
+
+#pulseaudio-slider slider {
+    min-height: 0px;
+    min-width: 0px;
+    opacity: 0;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    outline: none;
+    box-shadow: none;
+}
+
+#pulseaudio-slider trough {
+    min-height: 6px;
+    min-width: 80px;
+    border-radius: 3px;
+    background-color: #30363d;
+    border: none;
+}
+
+#pulseaudio-slider highlight {
+    min-width: 8px;
+    border-radius: 3px;
+    background-color: #58a6ff;
+    border: none;
+}
+
+#backlight {
+    color: #f9e2af;
+}
+
+#backlight:hover {
+    color: #ffffff;
+}
+
+
+/* 系統資源監控顏色 */
+#cpu {
+    color: #58a6ff;
+}
+
+#memory {
+    color: #f78166;
+}
+
+/* 網路狀態 */
+#network.disconnected {
+    color: #da3633;
+}
+
+#network.wifi {
+    color: #56d364;
+}
+
+#network.ethernet {
+    color: #56d364;
+}
+
+/* 電池狀態 */
+#battery.charging {
+    color: #56d364;
+}
+
+#battery.warning:not(.charging) {
+    color: #d29922;
+}
+
+#battery.critical:not(.charging) {
+    color: #da3633;
+    animation: blink 0.5s linear infinite alternate;
+}
+
+@keyframes blink {
+    to {
+        background-color: #da3633;
+        color: #ffffff;
+    }
+}
+
+/* 音量 */
+#pulseaudio.muted {
+    color: #da3633;
+}
+
+/* 系統托盤 */
+#tray > .passive {
+    opacity: 0.7;
+}
+
+#tray > .needs-attention {
+    background-color: #da3633;
+    color: #ffffff;
+    border-radius: 4px;
+}
