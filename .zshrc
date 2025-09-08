@@ -2,6 +2,11 @@ FUNCNEST=1000
 
 xset r rate 200 10
 
+bindkey "^[[1;3D" backward-word  # Alt + 左箭頭
+bindkey "^[[1;3C" forward-word   # Alt + 右箭頭
+bindkey "^[^[[D" backward-word   # Alt + 左箭頭
+bindkey "^[^[[C" forward-word    # Alt + 右箭頭
+
 eval "$(zoxide init zsh)"
 eval "$(starship init zsh)"
 eval "$(~/.local/bin/mise activate zsh)"
@@ -13,6 +18,9 @@ alias so="source ~/.config/.zshrc"
 alias note="zk edit -i -W $HOME/docs"
 alias n="nvim"
 
+export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
+export HYPRSHOT_DIR="~/screenshots"
+export EDITOR="nvim"
 export PATH="$HOME/zk:$PATH"
 export BAT_THEME="base16-256"
 export FZF_DEFAULT_OPTS='--color=bg+:#ffffff,fg+:#000000,hl+:#0066cc'

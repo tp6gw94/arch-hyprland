@@ -1,20 +1,19 @@
 *
+
 !.gitignore
 !nvim/
 !nvim/**
 !lazygit/
 !lazygit/**
-!ghostty/
-!ghostty/**
 !yazi/
 !yazi/**
 !mise/
 !mise/**
-!pop-shell/
-!pop-shell/**
-!wezterm/
-!wezterm/**
+!foot/
+!foot/**
+!hypr/
+!hypr/**
+!zellij/
+!zellij/**
 
 !.zshrc
-!dump-install-packages.sh
-!install-packages.sh

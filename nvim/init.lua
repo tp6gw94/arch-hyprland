@@ -56,9 +56,8 @@ vim.keymap.set('n', '<C-v>', '<C-W>v', { desc = 'Split Window Right', remap = tr
 vim.keymap.set('n', '<leader>wd', '<C-W>c', { desc = 'Delete Window', remap = true })
 
 
-vim.keymap.set('n', '<leader>f', "<CMD>Pick files tool='git'<CR>", { desc = "Find File" })
-
-vim.keymap.set('n', '<leader>b', "<CMD>Pick buffers<CR>", { desc = "Find Buffer" })
+vim.keymap.set('n', '<leader>f', "<CMD>FzfLua files <CR>", { desc = "Find File" })
+vim.keymap.set('n', '<leader>b', "<CMD>FzfLua buffers<CR>", { desc = "Find Buffer" })
 vim.keymap.set('n', '<leader>sl', "<CMD>FzfLua blines<CR>", { desc = "Search Current Bufer Line" })
 vim.keymap.set('n', '<leader>/', "<CMD>FzfLua live_grep_native<CR>", { desc = "Grep" })
 vim.keymap.set('n', "<leader>'", "<CMD>FzfLua resume<CR>", { desc = "Resume fzf" })
@@ -78,6 +77,8 @@ vim.keymap.set('n', '<leader>cd', vim.diagnostic.open_float, { desc = "Line Dian
 vim.keymap.set('n', '<leader>cr', vim.lsp.buf.rename, { desc = "Reanem" })
 vim.keymap.set('n', 'K', vim.lsp.buf.hover, { desc = "Hover" })
 vim.keymap.set('i', '<C-s>', vim.lsp.buf.signature_help, { desc = "Signature Help" })
+vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { desc = "Go to Definition" })
+vim.keymap.set('n', 'gr', vim.lsp.buf.references, { desc = "Go to References" })
 -- Autocmd
 vim.api.nvim_create_autocmd('FileType', {
 	pattern = { 'qf', 'help' },
@@ -115,6 +116,7 @@ vim.opt.smartcase = true
 vim.opt.signcolumn = "yes:1"
 
 vim.opt.timeoutlen = 500
+vim.opt.ttimeoutlen = 10
 
 vim.opt.splitright = true
 vim.opt.splitbelow = true
@@ -156,18 +158,6 @@ require("lazy").setup({
 					{ path = "${3rd}/luv/library", words = { "vim%.uv" } },
 				},
 			},
-		},
-		{
-			"zenbones-theme/zenbones.nvim",
-			dependencies = "rktjmp/lush.nvim",
-			lazy = false,
-			priority = 1000,
-			config = function()
-				vim.g.zenbones = { darken_comments = 45, lightness = 'bright', darken_cursor_line = 20 }
-				vim.cmd("colorscheme zenbones")
-
-				vim.cmd("highlight Visual guibg=#9acbed")
-			end
 		},
 		{
 			'echasnovski/mini.nvim',
@@ -284,7 +274,7 @@ require("lazy").setup({
 				vim.lsp.config('vtsls', vtsls_config)
 				vim.lsp.config('vue_ls', vue_ls_config)
 
-				vim.lsp.enable({ "lua_ls", "vtsls", "vue_ls", "eslint", "tailwindcss" })
+				vim.lsp.enable({ "lua_ls", "vtsls", "vue_ls", "eslint", "tailwindcss", "markdown_oxide", "cssls"})
 			end
 		},
 		{
@@ -300,18 +290,26 @@ require("lazy").setup({
 						javascriptreact = prettier,
 						typescript = prettier,
 						typescriptreact = prettier,
-						vue = prettier
+						vue = prettier,
+						json = prettier,
+						jsonc = prettier
 					}
 				})
 				vim.keymap.set("n", "<leader>cf", function(args) conform.format() end)
 			end
 		},
 		{
-			"mfussenegger/nvim-lint",
+			'mfussenegger/nvim-lint',
 			config = function()
 				require('lint').linters_by_ft = {
-					["*"] = { "typoes" },
 				}
+
+				vim.api.nvim_create_autocmd({ "BufWritePost" }, {
+					callback = function()
+						require('lint').try_lint()
+						require('lint').try_lint('cspell')
+					end
+				})
 			end
 		},
 		{
@@ -389,14 +387,6 @@ require("lazy").setup({
 					desc = "Symbols (Trouble)",
 				},
 				{
-					"gd",
-					"<cmd>Trouble lsp_definitions focus=true win.position=bottom<cr>"
-				},
-				{
-					"gr",
-					"<cmd>Trouble lsp_references focus=true win.position=bottom<cr>"
-				},
-				{
 					"<leader>cl",
 					"<cmd>Trouble lsp focus=true win.postion=bottom<cr>"
 				},
@@ -451,7 +441,29 @@ require("lazy").setup({
 					},
 				})
 			end
-		}
+		},
+		{
+			'projekt0n/github-nvim-theme',
+			name = 'github-theme',
+			lazy = false,
+			priority = 1000,
+			config = function()
+				require('github-theme').setup()
+
+				vim.cmd('colorscheme github_light_tritanopia')
+			end,
+		},
+		{
+			'ekickx/clipboard-image.nvim'
+		},
+		{
+			'MeanderingProgrammer/render-markdown.nvim',
+			dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-mini/mini.nvim' },
+			---@module 'render-markdown'
+			---@type render.md.UserConfig
+			opts = {},
+		},
+		
 	},
-	install = { colorscheme = { "zenbones" } }
+	install = { colorscheme = { "github_light_tritanopia" } }
 })
