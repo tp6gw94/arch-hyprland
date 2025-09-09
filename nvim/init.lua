@@ -98,6 +98,8 @@ vim.opt.number = true
 vim.opt.relativenumber = true
 vim.o.swapfile = false
 vim.opt.wrap = false
+vim.o.shiftwidth = 4
+vim.o.tabstop = 4
 
 vim.opt.showmode = false
 
@@ -274,7 +276,8 @@ require("lazy").setup({
 				vim.lsp.config('vtsls', vtsls_config)
 				vim.lsp.config('vue_ls', vue_ls_config)
 
-				vim.lsp.enable({ "lua_ls", "vtsls", "vue_ls", "eslint", "tailwindcss", "markdown_oxide", "cssls"})
+				vim.lsp.enable({ "lua_ls", "vtsls", "vue_ls", "eslint", "tailwindcss", "markdown_oxide",
+					"cssls" })
 			end
 		},
 		{
@@ -454,7 +457,16 @@ require("lazy").setup({
 			end,
 		},
 		{
-			'ekickx/clipboard-image.nvim'
+			"HakonHarnes/img-clip.nvim",
+			event = "VeryLazy",
+			opts = {
+				-- add options here
+				-- or leave it empty to use the default settings
+			},
+			keys = {
+				-- suggested keymap
+				{ "<leader>p", "<cmd>PasteImage<cr>", desc = "Paste image from system clipboard" },
+			},
 		},
 		{
 			'MeanderingProgrammer/render-markdown.nvim',
@@ -463,7 +475,7 @@ require("lazy").setup({
 			---@type render.md.UserConfig
 			opts = {},
 		},
-		
+
 	},
 	install = { colorscheme = { "github_light_tritanopia" } }
 })
