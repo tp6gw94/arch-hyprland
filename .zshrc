@@ -1,3 +1,5 @@
+eval "$(zellij setup --generate-auto-start zsh)"
+
 FUNCNEST=1000
 
 xset r rate 200 10
