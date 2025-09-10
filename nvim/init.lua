@@ -93,6 +93,18 @@ vim.api.nvim_create_autocmd("QuickFixCmdPost", {
 	end,
 })
 
+vim.api.nvim_create_user_command('CopyRelPath', function()
+	local path = vim.fn.expand('%')
+	vim.fn.setreg('+', path)
+	vim.notify('Copied: ' .. path)
+end, {})
+
+vim.api.nvim_create_user_command('CopyAbsPath', function()
+	local path = vim.fn.expand('%:p')
+	vim.fn.setreg('+', path)
+	vim.notify('Copied: ' .. path)
+end, {})
+
 -- Options
 vim.opt.number = true
 vim.opt.relativenumber = true
@@ -173,7 +185,7 @@ require("lazy").setup({
 					options = {
 						custom_commentstring = function()
 							return require('ts_context_commentstring')
-							    .calculate_commentstring() or vim.bo.commentstring
+								.calculate_commentstring() or vim.bo.commentstring
 						end,
 					},
 				}
@@ -236,12 +248,13 @@ require("lazy").setup({
 		},
 		{
 			"nvim-treesitter/nvim-treesitter",
+			dependencies = { "OXY2DEV/markview.nvim" },
 			branch = 'master',
 			lazy = false,
 			build = ":TSUpdate",
 			config = function()
 				require('nvim-treesitter.configs').setup({
-					ensure_installed = { "vue", "javascript", "typescript", "html", "css" },
+					ensure_installed = { "vue", "javascript", "typescript", "html", "css", "markdown", "markdown_inline", "yaml" },
 					auto_install = true,
 					highlight = { enable = true },
 				})
@@ -253,7 +266,7 @@ require("lazy").setup({
 				local tsserver_filetypes = { 'typescript', 'javascript', 'javascriptreact',
 					'typescriptreact', 'vue' }
 				local vue_language_server_path = vim.fn.stdpath('data') ..
-				    "/mason/packages/vue-language-server/node_modules/@vue/language-server"
+					"/mason/packages/vue-language-server/node_modules/@vue/language-server"
 				local vue_plugin = {
 					name = '@vue/typescript-plugin',
 					location = vue_language_server_path,
@@ -469,11 +482,70 @@ require("lazy").setup({
 			},
 		},
 		{
-			'MeanderingProgrammer/render-markdown.nvim',
-			dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-mini/mini.nvim' },
-			---@module 'render-markdown'
-			---@type render.md.UserConfig
-			opts = {},
+			"OXY2DEV/markview.nvim",
+			lazy = false,
+			-- For `nvim-treesitter` users.
+			priority = 49,
+			-- For blink.cmp's completion
+			-- source
+			dependencies = {
+				"saghen/blink.cmp"
+			},
+			config = function()
+				--- Gets icon from a parsed heading item.
+				---@param item markview.parsed.markdown.atx
+				---@return string
+				local function get_icon(_, item)
+					if not item or not item.levels then
+						return "";
+					end
+
+					local output = "◈ ";
+
+					for l, level in ipairs(item.levels) do
+						if level ~= 0 then
+							output = output .. level .. (l ~= #item.levels and "." or "");
+						end
+					end
+
+					return output .. " ";
+				end
+
+				local presets = require("markview.presets");
+
+				require('markview').setup({
+					markdown = {
+						headings = {
+							heading_1 = { icon_hl = "@markup.link", icon = get_icon },
+							heading_2 = { icon_hl = "@markup.link", icon = get_icon },
+							heading_3 = { icon_hl = "@markup.link", icon = get_icon }
+						},
+						list_items = {
+							shift_width = function(buffer, item)
+								--- Reduces the `indent` by 1 level.
+								---
+								---         indent                      1
+								--- ------------------------- = 1 ÷ --------- = new_indent
+								--- indent * (1 / new_indent)       new_indent
+								---
+								local parent_indnet = math.max(1, item.indent - vim.bo[buffer].shiftwidth);
+
+								return (item.indent) * (1 / (parent_indnet * 2));
+							end,
+							marker_minus = {
+								add_padding = function(_, item)
+									return item.indent > 1;
+								end
+							}
+						},
+						horizontal_rules = presets.horizontal_rules.thick,
+						tables = presets.tables.rounded
+					}
+				})
+				require('markview.extras.checkboxes').setup()
+				require("markview.extras.headings").setup();
+				require("markview.extras.editor").setup();
+			end
 		},
 
 	},
