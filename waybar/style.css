@@ -22,11 +22,11 @@ tooltip {
 
 /* 左側模組 */
 #workspaces {
-    margin: 0 8px;
+    margin: 0 4px;
 }
 
 #workspaces button {
-    padding: 0 4px;
+    padding: 0 2px;
     background-color: transparent;
     color: #7d8590;
     border: none;
@@ -53,17 +53,16 @@ tooltip {
 
 #window {
     margin: 0 8px;
-    padding: 0 12px;
+    padding: 0 8px;
     color: #ffffff;
     font-weight: 500;
 }
 
-/* 中央時鐘 */
 #clock {
     color: #f0f6fc;
     padding: 0 8px;
     border-radius: 6px;
-    font-weight: 600;
+    font-weight: bold;
 }
 
 #clock:hover {
@@ -71,66 +70,32 @@ tooltip {
 }
 
 /* 右側模組共同樣式 */
+#custom-input-method,
+#custom-power-menu,
 #tray,
 #network,
 #pulseaudio,
+#mpris,
 #cpu,
 #memory,
 #backlight,
 #battery {
     margin: 0 1px;
-    padding: 0 4px;
+    padding: 0 2px;
     color: #f0f6fc;
     transition: all 0.2s ease;
 }
 
+#custom-input-method:hover,
+#custom-power-menu:hover,
 #tray:hover,
 #network:hover,
 #pulseaudio:hover,
+#mpris:hover,
 #cpu:hover,
 #memory:hover,
 #battery:hover {
     background-color: #21262d;
-}
-
-/* 音量滑桿樣式 */
-#pulseaudio-slider {
-    margin: 0 4px;
-    padding: 0 8px;
-    border-radius: 4px;
-    min-width: 40px;
-    transition: all 0.2s ease;
-}
-
-#pulseaudio-slider:hover {
-    background-color: #21262d;
-    border-color: #30363d;
-}
-
-#pulseaudio-slider slider {
-    min-height: 0px;
-    min-width: 0px;
-    opacity: 0;
-    background: transparent;
-    border: none;
-    border-radius: 0;
-    outline: none;
-    box-shadow: none;
-}
-
-#pulseaudio-slider trough {
-    min-height: 6px;
-    min-width: 80px;
-    border-radius: 3px;
-    background-color: #30363d;
-    border: none;
-}
-
-#pulseaudio-slider highlight {
-    min-width: 8px;
-    border-radius: 3px;
-    background-color: #58a6ff;
-    border: none;
 }
 
 #backlight {

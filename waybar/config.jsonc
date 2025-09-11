@@ -7,15 +7,31 @@
   "modules-left": [],
   "modules-center": ["hyprland/workspaces", "hyprland/window"],
   "modules-right": [
-    "tray",
+    "custom/input-method",
     "backlight",
     "network",
     "pulseaudio",
+    "mpris",
     "cpu",
     "memory",
     "battery",
     "clock",
+    "custom/power-menu",
   ],
+  "custom/input-method": {
+    "format": "  {}",
+    "exec": "current=$(fcitx5-remote -n 2>/dev/null); if [ \"$current\" = \"rime\" ]; then echo '  中'; elif [ \"$current\" = \"keyboard-us\" ]; then echo 'A'; else echo '?'; fi",
+    "interval": 1,
+    "tooltip": false,
+    "on-click": "fcitx5-remote -t",
+  },
+
+  "custom/power-menu": {
+    "format": "⚡",
+    "on-click": "~/.config/scripts/tofi-power-menu.sh",
+    "on-click-right": "systemctl suspend",
+  },
+
   "hyprland/workspaces": {
     "disable-scroll": true,
     "all-outputs": true,
@@ -43,12 +59,12 @@
   },
   "tray": {
     "spacing": 10,
+    "icon-size": 15,
   },
   "clock": {
     "timezone": "Asia/Taipei",
-    "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
-    "format": "{:%H:%M}",
-    "format-alt": "{:%Y-%m-%d %H:%M:%S}",
+    "tooltip-format": "<big>{:%Y %B}</big>\n<tt><big>{calendar}</big></tt>",
+    "format": "{:%Y-%m-%d %H:%M:%S}",
   },
   "cpu": {
     "format": " {usage}%",
@@ -65,10 +81,10 @@
       "critical": 15,
     },
     "format": "{icon} {capacity}%",
-    "format-charging": " {capacity}%",
-    "format-plugged": " {capacity}%",
+    "format-charging": "{icon} {capacity}%",
+    "format-plugged": "{icon} {capacity}%",
     "format-alt": "{icon} {time}",
-    "format-icons": ["", "", "", "", ""],
+    "format-icons": [" ", " ", " ", " ", " "],
   },
   "network": {
     "format-wifi": " {signalStrength}%",
@@ -95,7 +111,22 @@
     "format-icons": {
       "default": ["", ""],
     },
-		"on-click": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
+    "on-click": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
     "on-click-right": "pavucontrol",
+  },
+
+  "mpris": {
+    "format": "{player_icon} {title}",
+    "format-paused": "{status_icon} <i>{title}</i>",
+    "max-length": 15,
+    "player-icons": {
+      "default": " ",
+      "mpv": " ",
+      "firefox": " ",
+    },
+    "status-icons": {
+      "paused": "⏸",
+      "playing": "▶",
+    },
   },
 }
