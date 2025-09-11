@@ -20,5 +20,7 @@ yazi/flavors
 !waybar/**
 !scripts/
 !scripts/**
+!tofi/
+!tofi/**
 
 !.zshrc
