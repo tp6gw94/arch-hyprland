@@ -94,7 +94,7 @@ vim.api.nvim_create_autocmd("QuickFixCmdPost", {
 })
 
 vim.api.nvim_create_user_command('CopyRelPath', function()
-	local path = vim.fn.expand('%')
+	local path = vim.fn.expand('%:.')
 	vim.fn.setreg('+', path)
 	vim.notify('Copied: ' .. path)
 end, {})
@@ -368,6 +368,9 @@ require("lazy").setup({
 					})
 				end
 				require('ufo').setup()
+			end,
+			cond = function ()
+				return vim.bo.filetype ~= "markdown"
 			end
 		},
 		{
@@ -497,27 +500,9 @@ require("lazy").setup({
 				require('markview').setup({
 					markdown = {
 						headings = {
-							heading_1 = { icon_hl = "@markup.link", icon = "[%d] " },
-							heading_2 = { icon_hl = "@markup.link", icon = "[%d.%d] " },
-							heading_3 = { icon_hl = "@markup.link", icon = "[%d.%d.%d] " }
-						},
-						list_items = {
-							shift_width = function(buffer, item)
-								--- Reduces the `indent` by 1 level.
-								---
-								---         indent                      1
-								--- ------------------------- = 1 ÷ --------- = new_indent
-								--- indent * (1 / new_indent)       new_indent
-								---
-								local parent_indnet = math.max(1, item.indent - vim.bo[buffer].shiftwidth);
-
-								return (item.indent) * (1 / (parent_indnet * 2));
-							end,
-							marker_minus = {
-								add_padding = function(_, item)
-									return item.indent > 1;
-								end
-							}
+							heading_1 = { icon = "[%d] " },
+							heading_2 = { icon = "[%d.%d] " },
+							heading_3 = { icon = "[%d.%d.%d] " }
 						},
 						horizontal_rules = presets.horizontal_rules.thick,
 						tables = presets.tables.rounded,
@@ -531,7 +516,15 @@ require("lazy").setup({
 				require("markview.extras.editor").setup();
 			end
 		},
-
+		{
+			"iamcco/markdown-preview.nvim",
+			cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+			build = "cd app && npm install",
+			init = function()
+				vim.g.mkdp_filetypes = { "markdown" }
+			end,
+			ft = { "markdown" },
+		}
 	},
 	install = { colorscheme = { "github_light_tritanopia" } }
 })
