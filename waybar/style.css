@@ -1,167 +1,63 @@
+@define-color foreground #575279;
+@define-color background #faf4ed;
+
 * {
-    font-family: 'JetBrains Mono', 'Noto Sans CJK TC', monospace;
-    font-size: 24px;
-    font-weight: 500;
+  background-color: @background;
+  color: @foreground;
+
+  border: none;
+  border-radius: 0;
+  min-height: 0;
+  font-family: CaskaydiaMono Nerd Font;
+  font-size: 16px;
 }
 
-window#waybar {
-    background-color: rgba(0, 0, 0, 0.3);
-    border-radius: 8px;
-    border: 1px solid #21262d;
-    transition: none;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+.modules-left {
+  margin-left: 8px;
 }
 
-tooltip {
-    background: #161b22;
-    color: #f0f6fc;
-    border-radius: 6px;
-    border: 1px solid #30363d;
-    font-family: 'JetBrains Mono', monospace;
-}
-
-/* 左側模組 */
-#workspaces {
-    margin: 0 4px;
-}
-
-#workspaces button {
-    padding: 0 2px;
-    background-color: transparent;
-    color: #7d8590;
-    border: none;
-    border-radius: 4px;
-    margin: 0 2px;
-    transition: all 0.2s ease;
-}
-
-#workspaces button:hover {
-    background-color: #21262d;
-    color: #f0f6fc;
-}
-
-#workspaces button.active {
-    background-color: #238636;
-    color: #ffffff;
-    font-weight: 600;
-}
-
-#workspaces button.urgent {
-    background-color: #da3633;
-    color: #ffffff;
+.modules-right {
+  margin-right: 8px;
 }
 
 #window {
-    margin: 0 8px;
-    padding: 0 8px;
-    color: #ffffff;
-    font-weight: 500;
+  margin: 0 4px;
+	font-weight: bold;
+}
+
+#workspaces button {
+  all: initial;
+  padding: 0 6px;
+  margin: 0 1.5px;
+  min-width: 9px;
+}
+
+#workspaces button.empty {
+  opacity: 0.5;
+}
+
+#tray,
+#cpu,
+#battery,
+#network,
+#bluetooth,
+#pulseaudio {
+  min-width: 12px;
+  margin: 0 7.5px;
+}
+
+#custom-expand-icon {
+  margin-right: 7px;
+}
+
+tooltip {
+  padding: 2px;
 }
 
 #clock {
-    color: #f0f6fc;
-    padding: 0 8px;
-    border-radius: 6px;
-    font-weight: bold;
+  margin-left: 8.75px;
 }
 
-#clock:hover {
-    background-color: #30363d;
-}
-
-/* 右側模組共同樣式 */
-#custom-input-method,
-#custom-power-menu,
-#tray,
-#network,
-#pulseaudio,
-#mpris,
-#cpu,
-#memory,
-#backlight,
-#battery {
-    margin: 0 1px;
-    padding: 0 2px;
-    color: #f0f6fc;
-    transition: all 0.2s ease;
-}
-
-#custom-input-method:hover,
-#custom-power-menu:hover,
-#tray:hover,
-#network:hover,
-#pulseaudio:hover,
-#mpris:hover,
-#cpu:hover,
-#memory:hover,
-#battery:hover {
-    background-color: #21262d;
-}
-
-#backlight {
-    color: #f9e2af;
-}
-
-#backlight:hover {
-    color: #ffffff;
-}
-
-
-/* 系統資源監控顏色 */
-#cpu {
-    color: #58a6ff;
-}
-
-#memory {
-    color: #f78166;
-}
-
-/* 網路狀態 */
-#network.disconnected {
-    color: #da3633;
-}
-
-#network.wifi {
-    color: #56d364;
-}
-
-#network.ethernet {
-    color: #56d364;
-}
-
-/* 電池狀態 */
-#battery.charging {
-    color: #56d364;
-}
-
-#battery.warning:not(.charging) {
-    color: #d29922;
-}
-
-#battery.critical:not(.charging) {
-    color: #da3633;
-    animation: blink 0.5s linear infinite alternate;
-}
-
-@keyframes blink {
-    to {
-        background-color: #da3633;
-        color: #ffffff;
-    }
-}
-
-/* 音量 */
-#pulseaudio.muted {
-    color: #da3633;
-}
-
-/* 系統托盤 */
-#tray > .passive {
-    opacity: 0.7;
-}
-
-#tray > .needs-attention {
-    background-color: #da3633;
-    color: #ffffff;
-    border-radius: 4px;
+.hidden {
+  opacity: 0;
 }

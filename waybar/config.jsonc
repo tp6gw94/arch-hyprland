@@ -1,22 +1,20 @@
 {
+  "reload_style_on_change": true,
   "layer": "top",
   "position": "top",
-  "height": 20,
-  "spacing": 4,
+  "height": 26,
+  "spacing": 0,
   "margin": 0,
-  "modules-left": [],
-  "modules-center": ["hyprland/workspaces", "hyprland/window"],
+  "modules-left": ["hyprland/workspaces", "hyprland/window"],
+  "modules-center": ["clock", "mpris"],
   "modules-right": [
-    "custom/input-method",
-    "backlight",
+    "group/tray-expander",
+    "bluetooth",
     "network",
     "pulseaudio",
-    "mpris",
     "cpu",
     "memory",
     "battery",
-    "clock",
-    "custom/power-menu",
   ],
   "custom/input-method": {
     "format": "  {}",
@@ -25,13 +23,6 @@
     "tooltip": false,
     "on-click": "fcitx5-remote -t",
   },
-
-  "custom/power-menu": {
-    "format": "⚡",
-    "on-click": "~/.config/scripts/tofi-power-menu.sh",
-    "on-click-right": "systemctl suspend",
-  },
-
   "hyprland/workspaces": {
     "disable-scroll": true,
     "all-outputs": true,
@@ -50,10 +41,19 @@
       "urgent": "",
       "focused": "",
       "default": "",
+      "active": "󱓻",
+      "default": "",
+    },
+    "persistent-workspaces": {
+      "1": [],
+      "2": [],
+      "3": [],
+      "4": [],
+      "5": [],
     },
   },
   "hyprland/window": {
-    "format": "{class}",
+    "format": "{initialTitle} - {title}",
     "separate-outputs": true,
     "max-length": 50,
   },
@@ -63,38 +63,49 @@
   },
   "clock": {
     "timezone": "Asia/Taipei",
-    "tooltip-format": "<big>{:%Y %B}</big>\n<tt><big>{calendar}</big></tt>",
+    "tooltip": false,
     "format": "{:%Y-%m-%d %H:%M:%S}",
   },
   "cpu": {
-    "format": " {usage}%",
+    "format": "󰍛",
     "tooltip": false,
     "interval": 2,
+    "on-click": "foot -e btop",
   },
   "memory": {
     "format": " {used:0.1f}G",
     "tooltip-format": "RAM: {used:0.1f}G/{total:0.1f}G ({percentage}%)\nSwap: {swapUsed:0.1f}G/{swapTotal:0.1f}G",
   },
   "battery": {
-    "states": {
-      "warning": 30,
-      "critical": 15,
+    "format": "{capacity}% {icon}",
+    "format-discharging": "{icon}",
+    "format-charging": "{icon}",
+    "format-plugged": "",
+    "format-icons": {
+      "charging": ["󰢜", "󰂆", "󰂇", "󰂈", "󰢝", "󰂉", "󰢞", "󰂊", "󰂋", "󰂅"],
+      "default": ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
     },
-    "format": "{icon} {capacity}%",
-    "format-charging": "{icon} {capacity}%",
-    "format-plugged": "{icon} {capacity}%",
-    "format-alt": "{icon} {time}",
-    "format-icons": [" ", " ", " ", " ", " "],
+    "format-full": "󰂅",
+    "tooltip-format-discharging": "{power:>1.0f}W↓ {capacity}%",
+    "tooltip-format-charging": "{power:>1.0f}W↑ {capacity}%",
+    "interval": 5,
+    "states": {
+      "warning": 20,
+      "critical": 10,
+    },
   },
   "network": {
-    "format-wifi": " {signalStrength}%",
-    "format-ethernet": "󱚽 ",
-    "tooltip-format": "{ifname}: {ipaddr}/{cidr}",
-    "format-linked": " {ifname} (No IP)",
-    "format-disconnected": "󰖪 ",
-    "format-alt": "{ifname}: {ipaddr}/{cidr}",
+    "format-icons": ["󰤯", "󰤟", "󰤢", "󰤥", "󰤨"],
+    "format": "{icon}",
+    "format-wifi": "{icon}",
+    "format-ethernet": "󰀂",
+    "format-disconnected": "󰖪",
+    "tooltip-format-wifi": "{essid} ({frequency} GHz)\n⇣{bandwidthDownBytes}  ⇡{bandwidthUpBytes}",
+    "tooltip-format-ethernet": "⇣{bandwidthDownBytes}  ⇡{bandwidthUpBytes}",
+    "tooltip-format-disconnected": "Disconnected",
+    "interval": 3,
+    "spacing": 1,
   },
-
   "backlight": {
     "format": "{icon} {percent}%",
     "format-icons": ["", "", "", "", "", "", "", "", ""],
@@ -106,7 +117,8 @@
   },
 
   "pulseaudio": {
-    "format": "{volume}% {icon}",
+    "format": "{icon}",
+    "tooltip-format": "{volume}%",
     "format-muted": " ",
     "format-icons": {
       "default": ["", ""],
@@ -114,7 +126,13 @@
     "on-click": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
     "on-click-right": "pavucontrol",
   },
-
+  "bluetooth": {
+    "format": "",
+    "format-disabled": "󰂲",
+    "format-connected": "",
+    "tooltip-format": "Devices connected: {num_connections}",
+    "on-click": "blueberry",
+  },
   "mpris": {
     "format": "{player_icon} {title}",
     "format-paused": "{status_icon} <i>{title}</i>",
@@ -128,5 +146,21 @@
       "paused": "⏸",
       "playing": "▶",
     },
+  },
+  "group/tray-expander": {
+    "orientation": "inherit",
+    "drawer": {
+      "transition-duration": 600,
+      "children-class": "tray-group-item",
+    },
+    "modules": ["custom/expand-icon", "tray"],
+  },
+  "custom/expand-icon": {
+    "format": " ",
+    "tooltip": false,
+  },
+  "tray": {
+    "icon-size": 12,
+    "spacing": 12,
   },
 }
