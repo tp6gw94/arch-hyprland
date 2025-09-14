@@ -12,7 +12,7 @@
     "bluetooth",
     "network",
     "pulseaudio",
-    "cpu",
+    "custom/cpu",
     "battery",
   ],
   "custom/input-method": {
@@ -52,7 +52,7 @@
   "hyprland/window": {
     "format": "{initialTitle} - {title}",
     "separate-outputs": true,
-    "max-length": 50,
+    "max-length": 20,
   },
   "tray": {
     "spacing": 10,
@@ -60,13 +60,36 @@
   },
   "clock": {
     "timezone": "Asia/Taipei",
-    "tooltip": false,
-    "format": "{:%Y-%m-%d %H:%M}",
+    "tooltip": true,
+    "format": "{:%H:%M}  ",
+    "format-alt": "{:%A, %B %d, %Y (%R)}  ",
+    "tooltip-format": "\n<span size='9pt' font='Google Sans Code'>{calendar}</span>",
+    "calendar": {
+      "mode": "year",
+      "mode-mon-col": 3,
+      "weeks-pos": "right",
+      "on-scroll": 1,
+      "format": {
+        "months": "<span color='#d7827e' font_weight='bold' font_size='11pt'>{}</span>",
+        "days": "<span color='#575279'>{}</span>",
+        "weeks": "<span color='#9893a5' font_size='9pt'>W{}</span>",
+        "weekdays": "<span color='#56949f' font_weight='bold'>{}</span>",
+        "today": "<span color='#faf4ed' background='#d7827e'><b><u>{}</u></b></span>",
+      },
+      "actions": {
+        "on-click-right": "mode",
+        "on-scroll-up": "shift_up",
+        "on-scroll-down": "shift_down"
+      }
+    },
   },
-  "cpu": {
-    "format": "󰍛",
-    "tooltip": false,
+  "custom/cpu": {
+    "format": "{icon}",
+    "format-icons": "󰍛",
     "interval": 2,
+    "exec": "cpu=$(awk '{u=$2+$4; t=$2+$4+$5; if (NR==1){u1=u; t1=t;} else printf \"%.0f\", ($2+$4-u1) * 100 / (t-t1); }' <(grep 'cpu ' /proc/stat; sleep 0.1; grep 'cpu ' /proc/stat)); mem=$(free -h | awk '/^Mem:/ {printf \"%s/%s (%d%%)\", $3, $2, int($3/$2*100)}'); echo '{\"text\":\"\",\"tooltip\":\"CPU: '${cpu}'%\\nMemory: '${mem}'\"}'",
+    "return-type": "json",
+    "tooltip": true,
     "on-click": "foot -e btop",
   },
   "memory": {
@@ -131,7 +154,7 @@
     "on-click": "blueberry",
   },
   "mpris": {
-    "format": "{player_icon} {title}",
+    "format": "| {player_icon} {title}",
     "format-paused": "{status_icon} <i>{title}</i>",
     "max-length": 15,
     "player-icons": {
@@ -150,7 +173,14 @@
       "transition-duration": 600,
       "children-class": "tray-group-item",
     },
-    "modules": ["custom/expand-icon", "tray", "custom/screenshot-window", "custom/screenshot-output", "custom/screenshot-region", "custom/screenrec-toggle"],
+    "modules": [
+      "custom/expand-icon",
+      "tray",
+      "custom/screenshot-window",
+      "custom/screenshot-output",
+      "custom/screenshot-region",
+      "custom/screenrec-toggle",
+    ],
   },
   "custom/expand-icon": {
     "format": " ",
