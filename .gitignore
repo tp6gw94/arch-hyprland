@@ -1,6 +1,5 @@
 *
 
-!.gitignore
 !nvim/
 !nvim/**
 !lazygit/
@@ -25,4 +24,7 @@ yazi/flavors
 !btop/
 !btop/**
 
+!.gitignore
+!pkglist.txt
+!aurlist.txt
 !.zshrc

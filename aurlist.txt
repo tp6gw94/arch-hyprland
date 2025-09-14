@@ -1,0 +1,10 @@
+hyprshot-git
+maplemono-nf-cn-unhinted
+paru
+paru-debug
+tlpui
+tofi
+wdisplays
+wdisplays-debug
+wl-screenrec
+yay-debug
