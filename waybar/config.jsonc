@@ -64,7 +64,7 @@
   "clock": {
     "timezone": "Asia/Taipei",
     "tooltip": false,
-    "format": "{:%Y-%m-%d %H:%M:%S}",
+    "format": "{:%Y-%m-%d %H:%M}",
   },
   "cpu": {
     "format": "󰍛",
@@ -153,7 +153,7 @@
       "transition-duration": 600,
       "children-class": "tray-group-item",
     },
-    "modules": ["custom/expand-icon", "tray"],
+    "modules": ["custom/expand-icon", "tray", "custom/screenshot-window", "custom/screenshot-output", "custom/screenshot-region", "custom/screenrec-toggle"],
   },
   "custom/expand-icon": {
     "format": " ",
@@ -162,5 +162,27 @@
   "tray": {
     "icon-size": 12,
     "spacing": 12,
+  },
+  "custom/screenshot-window": {
+    "format": "󰖲",
+    "tooltip-format": "Screenshot window",
+    "on-click": "$MY_CONFIG_SCRIPT_DIR/hyprshot-satty.sh window",
+  },
+  "custom/screenshot-output": {
+    "format": "󰹑",
+    "tooltip-format": "Screenshot output",
+    "on-click": "$MY_CONFIG_SCRIPT_DIR/hyprshot-satty.sh output",
+  },
+  "custom/screenshot-region": {
+    "format": "󰩬",
+    "tooltip-format": "Screenshot region",
+    "on-click": "$MY_CONFIG_SCRIPT_DIR/hyprshot-satty.sh region",
+  },
+  "custom/screenrec-toggle": {
+    "format": "󰻂",
+    "tooltip-format": "Toggle screen recording",
+    "on-click": "$MY_CONFIG_SCRIPT_DIR/waybar-screenrec-toggle.sh",
+    "exec": "pgrep -x wl-screenrec > /dev/null && echo '󰻃' || echo '󰻂'",
+    "interval": 1,
   },
 }

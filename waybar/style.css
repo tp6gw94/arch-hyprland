@@ -50,12 +50,29 @@
   margin-right: 7px;
 }
 
+#custom-screenshot-icon {
+  margin-right: 7px;
+}
+
+#custom-screenshot-window,
+#custom-screenshot-output,
+#custom-screenshot-region,
+#custom-screenrec-toggle {
+  min-width: 12px;
+  margin: 0 4px;
+  padding: 0 2px;
+}
+
+#custom-screenrec-toggle {
+  margin-right: 7px;
+}
+
 tooltip {
   padding: 2px;
 }
 
 #clock {
-  margin-left: 8.75px;
+  margin: 0 8.75px;
 }
 
 .hidden {
