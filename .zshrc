@@ -23,7 +23,9 @@ alias n="nvim"
 export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
 export HYPRSHOT_DIR="~/screenshots"
 export EDITOR="nvim"
+export TERMINAL="foot"
 export PATH="$HOME/zk:$PATH"
+export ZK_NOTEBOOK_DIR="$HOME/zk"
 export BAT_THEME="base16-256"
 export FZF_DEFAULT_OPTS='--color=bg+:#ffffff,fg+:#000000,hl+:#0066cc'
 

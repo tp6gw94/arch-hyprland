@@ -21,7 +21,6 @@ vim.g.maplocalleader = " "
 vim.g.have_nerd_font = true
 
 -- Keymap
-
 vim.keymap.set('n', '<Esc>', '<cmd>nohl<cr>')
 vim.keymap.set('i', 'jk', '<Esc>')
 
@@ -58,8 +57,8 @@ vim.keymap.set('n', '<leader>wd', '<C-W>c', { desc = 'Delete Window', remap = tr
 
 vim.keymap.set('n', '<leader>f', "<CMD>FzfLua files <CR>", { desc = "Find File" })
 vim.keymap.set('n', '<leader>b', "<CMD>FzfLua buffers<CR>", { desc = "Find Buffer" })
-vim.keymap.set('n', '<leader>sl', "<CMD>FzfLua blines<CR>", { desc = "Search Current Bufer Line" })
-vim.keymap.set('n', '<leader>/', "<CMD>FzfLua live_grep_native<CR>", { desc = "Grep" })
+vim.keymap.set('n', '<leader>/', "<CMD>FzfLua blines<CR>", { desc = "Search Current Bufer Line" })
+vim.keymap.set('n', '<leader>lg', "<CMD>FzfLua live_grep_native<CR>", { desc = "Grep" })
 vim.keymap.set('n', "<leader>'", "<CMD>FzfLua resume<CR>", { desc = "Resume fzf" })
 vim.keymap.set('n', "<C-p>", "<CMD>FzfLua global<CR>", { desc = "Global Picker" })
 vim.keymap.set('n', '<leader>q', '<CMD>bd<CR>', { desc = "Delete Buffer" })
@@ -67,9 +66,12 @@ vim.keymap.set('n', '<leader>q', '<CMD>bd<CR>', { desc = "Delete Buffer" })
 vim.keymap.set('n', 'U', '<C-r>', { noremap = true })
 
 vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
+vim.keymap.set('n', '<leader>e', '<CMD>lua MiniFiles.open(vim.api.nvim_buf_get_name(0), false)<CR>',
+	{ desc = "MiniFiles directory of current file" })
+vim.keymap.set('n', '<leader>E', '<CMD>lua MiniFiles.open(nil, false)<CR>',
+	{ desc = "MiniFiles current working directory" })
 
-vim.keymap.set('n', '<leader>z', '<C-w>_<C-w>|')
-vim.keymap.set('n', '<leader>Z', '<C-w>=')
+vim.keymap.set('n', '<leader>wz', '<CMD>lua MiniMisc.zoom()<CR>', { desc = "Zoom" })
 
 vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, { desc = "Code Action" })
 vim.keymap.set('n', '<leader>cA', function() vim.lsp.buf.code_action({ context = { only = { "source" } } }) end)
@@ -77,8 +79,7 @@ vim.keymap.set('n', '<leader>cd', vim.diagnostic.open_float, { desc = "Line Dian
 vim.keymap.set('n', '<leader>cr', vim.lsp.buf.rename, { desc = "Reanem" })
 vim.keymap.set('n', 'K', vim.lsp.buf.hover, { desc = "Hover" })
 vim.keymap.set('i', '<C-s>', vim.lsp.buf.signature_help, { desc = "Signature Help" })
-vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { desc = "Go to Definition" })
-vim.keymap.set('n', 'gr', vim.lsp.buf.references, { desc = "Go to References" })
+
 -- Autocmd
 vim.api.nvim_create_autocmd('FileType', {
 	pattern = { 'qf', 'help' },
@@ -206,7 +207,6 @@ require("lazy").setup({
 						start_jumping = 'ss'
 					}
 				})
-				require('mini.pick').setup()
 				require('mini.cursorword').setup()
 				local hipatterns = require('mini.hipatterns')
 				hipatterns.setup({
@@ -224,8 +224,10 @@ require("lazy").setup({
 				require('mini.icons').setup()
 				require('mini.indentscope').setup()
 				require('mini.statusline').setup()
-				require('mini.fuzzy').setup()
-			end
+				require('mini.pick').setup()
+				require('mini.files').setup()
+				require('mini.misc').setup()
+			end,
 		},
 		{
 			'stevearc/oil.nvim',
@@ -289,8 +291,8 @@ require("lazy").setup({
 				vim.lsp.config('vtsls', vtsls_config)
 				vim.lsp.config('vue_ls', vue_ls_config)
 
-				vim.lsp.enable({ "lua_ls", "vtsls", "vue_ls", "eslint", "tailwindcss", "markdown_oxide",
-					"cssls" })
+				vim.lsp.enable({ "lua_ls", "vtsls", "vue_ls", "eslint", "tailwindcss", "markdown_oxide", "zk"
+				, "cssls" })
 			end
 		},
 		{
@@ -302,6 +304,7 @@ require("lazy").setup({
 				conform.setup({
 					formatters_by_ft = {
 						lua = { lsp_format = "first" },
+						markdown = prettier,
 						javascript = prettier,
 						javascriptreact = prettier,
 						typescript = prettier,
@@ -369,7 +372,7 @@ require("lazy").setup({
 				end
 				require('ufo').setup()
 			end,
-			cond = function ()
+			cond = function()
 				return vim.bo.filetype ~= "markdown"
 			end
 		},
@@ -386,7 +389,11 @@ require("lazy").setup({
 		{
 			"folke/trouble.nvim",
 			opts = {
-				focus = true
+				focus = true,
+				auto_preview = false,
+				keys = {
+					["<Tab>"] = "toggle_preview"
+				}
 			},
 			cmd = "Trouble",
 			keys = {
@@ -407,17 +414,35 @@ require("lazy").setup({
 				},
 				{
 					"<leader>cl",
-					"<cmd>Trouble lsp focus=true win.postion=bottom<cr>"
+					"<cmd>Trouble lsp focus=true win.postion=bottom<cr>",
 				},
 				{
-					"<leader>xL",
-					"<cmd>Trouble loclist toggle<cr>",
-					desc = "Location List (Trouble)",
+					"gr",
+					"<cmd>Trouble lsp_references focus=true win.position=bottom<cr>"
 				},
 				{
-					"<leader>xQ",
-					"<cmd>Trouble qflist toggle<cr>",
-					desc = "Quickfix List (Trouble)",
+					"gD",
+					"<cmd>Trouble lsp_declarations focus=true win.position=bottom<cr>"
+				},
+				{
+					"gt",
+					"<cmd>Trouble lsp_type_definitions focus=true win.position=bottom<cr>"
+				},
+				{
+					"gd",
+					"<cmd>Trouble lsp_definitions focus=true win.position=bottom<cr>"
+				},
+				{
+					"gi",
+					"<cmd>Trouble lsp_implementations focus=true win.position=bottom<cr>"
+				},
+				{
+					"gci",
+					"<cmd>Trouble lsp_incoming_calls focus=true win.position=bottom<cr>"
+				},
+				{
+					"gco",
+					"<cmd>Trouble lsp_outgoing_calls focus=true win.position=bottom<cr>"
 				},
 			},
 		},
@@ -524,6 +549,225 @@ require("lazy").setup({
 				vim.g.mkdp_filetypes = { "markdown" }
 			end,
 			ft = { "markdown" },
+		},
+		{
+			"zk-org/zk-nvim",
+			config = function()
+				require("zk").setup({
+					picker = "fzf_lua",
+
+					lsp = {
+						config = {
+							name = "zk",
+							cmd = { "zk", "lsp" },
+							filetypes = { "markdown" },
+						},
+						auto_attach = {
+							enabled = true,
+						},
+					},
+
+				})
+
+				-- Custom commands
+				local commands = require("zk.commands")
+
+				-- ZkMenu - custom menu for creating notes
+				commands.add("ZkMenu", function(opts)
+					require('fzf-lua').fzf_exec(
+						{ "Index", "Notes", "Work", "Meeting" },
+						{
+							prompt = "Select type > ",
+							actions = {
+								['default'] = function(selected)
+									if not selected or #selected == 0 then return end
+									local choice = selected[1]
+
+									if choice == "Index" then
+										-- Edit index.md directly
+										local index_path = vim.fn.expand("$ZK_NOTEBOOK_DIR/index.md")
+										if vim.fn.filereadable(index_path) == 0 then
+											index_path = vim.fn.getcwd() .. "/index.md"
+										end
+										vim.cmd("edit " .. index_path)
+									elseif choice == "Notes" or choice == "Work" or choice == "Meeting" then
+										local dir_map = {
+											Notes = "notes",
+											Work = "work/notes",
+											Meeting = "work/meeting"
+										}
+										local target_dir = dir_map[choice]
+
+										-- Create new note in specific directory
+										vim.ui.input({ prompt = "Note title: " }, function(title)
+											if choice == "Notes" then
+												-- Notes requires title
+												if title and title ~= "" then
+													require("zk").new({
+														title = title,
+														dir = target_dir,
+														edit = true
+													})
+												else
+													vim.notify("Title is required for Notes")
+												end
+											else
+												-- Work and Meeting can use random ID if no title
+												if title and title ~= "" then
+													require("zk").new({
+														title = title,
+														dir = target_dir,
+														edit = true
+													})
+												else
+													-- Generate random unique ID
+													local random_id = string.format("%04x", math.random(0, 65535))
+													require("zk").new({
+														title = random_id,
+														dir = target_dir,
+														edit = true
+													})
+												end
+											end
+										end)
+									end
+								end
+							},
+							winopts = {
+								height = 0.35,
+								width = 0.3,
+							},
+						}
+					)
+				end)
+
+				-- ZkNewMeeting - quick command for creating meeting notes
+				commands.add("ZkNewMeeting", function(opts)
+					opts = vim.tbl_extend("force", { dir = "work/meeting" }, opts or {})
+					require("zk").new(opts)
+				end)
+
+				-- ZkSearch - search notes by directory
+				commands.add("ZkSearch", function(opts)
+					require('fzf-lua').fzf_exec(
+						{ "Notes", "Work", "Meeting", "All" },
+						{
+							prompt = "Search in > ",
+							actions = {
+								['default'] = function(selected)
+									if not selected or #selected == 0 then return end
+									local choice = selected[1]
+
+									if choice == "All" then
+										require("zk").pick_notes({
+											sort = { "created" }
+										}, {
+											title = "Search all notes",
+											multi_select = false
+										}, function(notes)
+											if notes and #notes > 0 then
+												vim.cmd("edit " .. notes[1].absPath)
+											end
+										end)
+									else
+										local dir_map = {
+											Notes = "notes",
+											Work = "work/notes",
+											Meeting = "work/meeting"
+										}
+										local target_dir = dir_map[choice]
+
+										-- Use zk list API to get filtered notes
+										require("zk.api").list(nil, {
+											hrefs = { target_dir },
+											sort = { "created" },
+											select = { "title", "absPath", "path", "content", "rawContent", "wordCount", "tags", "metadata" }
+										}, function(err, notes)
+											if err then
+												vim.notify("Error: " .. err.message)
+												return
+											end
+
+											if notes and #notes > 0 then
+												require("zk.ui").pick_notes(notes, {
+													title = "Search in " .. choice,
+													multi_select = false
+												}, function(selected_note)
+													if selected_note then
+														local file_path = selected_note.absPath or selected_note.path
+														if file_path then
+															vim.cmd("edit " .. vim.fn.fnameescape(file_path))
+														else
+															vim.notify("Could not determine file path for note")
+														end
+													else
+														vim.notify("No note selected")
+													end
+												end)
+											else
+												vim.notify("No notes found in " .. choice)
+											end
+										end)
+									end
+								end
+							},
+							winopts = {
+								height = 0.3,
+								width = 0.3,
+							},
+						}
+					)
+				end)
+			end,
+			keys = {
+				{
+					"<leader>zm",
+					"<Cmd>ZkMenu<CR>",
+					desc = "Zk Menu (Index/Notes/Work/Meeting)"
+				},
+				{
+					"<leader>zn",
+					"<Cmd>ZkNew<CR>",
+					desc = "Zk New Note (original)"
+				},
+				{
+					"<leader>zo",
+					"<Cmd>ZkNotes { sort = { 'modified' } }<CR>",
+					desc = "Open notes"
+				},
+				{
+					"<leader>zt",
+					"<Cmd>ZkTags<CR>",
+					desc = "Zk tags"
+				},
+				{
+					"<leader>zf",
+					function()
+						vim.ui.input({ prompt = "Search: " }, function(query)
+							if query and query ~= "" then
+								vim.cmd("ZkNotes { sort = { 'modified' }, match = { '" .. query .. "' } }")
+							end
+						end)
+					end,
+					desc = "Search notes"
+				},
+				{
+					"<leader>zf",
+					":'<,'>ZkMatch<CR>",
+					mode = "v",
+					desc = "Search notes matching selection"
+				},
+				{
+					"<leader>zi",
+					"<Cmd>ZkIndex<CR>",
+					desc = "Index zk notebook"
+				},
+				{
+					"<leader>zs",
+					"<Cmd>ZkSearch<CR>",
+					desc = "Search notes by directory"
+				},
+			}
 		}
 	},
 	install = { colorscheme = { "github_light_tritanopia" } }
