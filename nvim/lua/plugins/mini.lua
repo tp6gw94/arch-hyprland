@@ -67,6 +67,126 @@ return {
 		require("mini.extra").setup()
 		require("mini.files").setup()
 		require("mini.misc").setup()
+
+		-- Setup SmartPick
+		local smartpick = require("config.smartpick")
+		smartpick.setup()
+
+		vim.api.nvim_set_hl(0, "MiniPickBorder", {
+			fg = "#0969da",
+			bg = "NONE",
+		})
+
+		vim.api.nvim_set_hl(0, "MiniPickBorderBusy", {
+			fg = "#cf222e",
+			bg = "NONE",
+		})
+
+		vim.api.nvim_set_hl(0, "MiniPickMatchCurrent", {
+			bg = "#0366d6",
+			fg = "#ffffff",
+			bold = true,
+		})
+
+		vim.api.nvim_set_hl(0, "MiniPickMatchMarked", {
+			bg = "#fb8500",
+			fg = "#ffffff",
+			bold = true,
+		})
+
+		vim.api.nvim_set_hl(0, "MiniPickMatchRanges", {
+			bg = "#ffd60a",
+			fg = "#000000",
+		})
+
+		vim.api.nvim_set_hl(0, "MiniPickNormal", {
+			bg = "#ffffff",
+			fg = "#24292f",
+		})
+
+		vim.api.nvim_set_hl(0, "MiniPickPrompt", {
+			fg = "#0969da",
+			bold = true,
+		})
+
+		vim.api.nvim_set_hl(0, "MiniPickPromptCaret", {
+			fg = "#cf222e",
+			bold = true,
+		})
+
+		vim.api.nvim_set_hl(0, "MiniPickBorderText", {
+			fg = "#24292f",
+			bg = "NONE",
+		})
+
+		vim.api.nvim_set_hl(0, "MiniPickHeader", {
+			fg = "#0969da",
+			bold = true,
+		})
+
+		vim.api.nvim_set_hl(0, "MiniPickPreviewLine", {
+			bg = "#28a745",
+			fg = "#ffffff",
+		})
+
+		vim.api.nvim_set_hl(0, "MiniPickPreviewRegion", {
+			bg = "#6f42c1",
+			fg = "#ffffff",
+		})
+
+		vim.api.nvim_set_hl(0, "MiniFilesBorder", {
+			fg = "#0969da",
+			bg = "NONE",
+		})
+
+		vim.api.nvim_set_hl(0, "MiniFilesBorderModified", {
+			fg = "#cf222e",
+			bg = "NONE",
+			bold = true,
+		})
+
+		vim.api.nvim_set_hl(0, "MiniFilesCursorLine", {
+			bg = "#0366d6",
+			fg = "#ffffff",
+		})
+
+		vim.api.nvim_set_hl(0, "MiniFilesDirectory", {
+			fg = "#6f42c1",
+			bold = true,
+		})
+
+		vim.api.nvim_set_hl(0, "MiniFilesFile", {
+			fg = "#24292f",
+		})
+
+		vim.api.nvim_set_hl(0, "MiniFilesNormal", {
+			bg = "#ffffff",
+			fg = "#24292f",
+		})
+
+		vim.api.nvim_set_hl(0, "MiniFilesTitle", {
+			fg = "#0969da",
+			bg = "#f6f8fa",
+			bold = true,
+		})
+
+		vim.api.nvim_set_hl(0, "MiniFilesTitleFocused", {
+			fg = "#ffffff",
+			bg = "#0969da",
+			bold = true,
+		})
+
+		-- SmartPick highlight groups
+		vim.api.nvim_set_hl(0, "SmartPickBuffer", {
+			bg = "#f6f8fa",
+		})
+		vim.api.nvim_set_hl(0, "SmartPickPath", {
+			fg = "#6e7781",
+		})
+		vim.api.nvim_set_hl(0, "SmartPickPathMatch", {
+			fg = "#0969da",
+			bold = true,
+		})
 	end,
 	keys = {
 		{
@@ -87,9 +207,9 @@ return {
 		{
 			"<leader>f",
 			function()
-				require("mini.pick").builtin.files()
+				require("config.smartpick").picker()
 			end,
-			desc = "Find File",
+			desc = "Smart Pick (Files + Buffers)",
 		},
 		{
 			"<leader>b",

@@ -7,16 +7,21 @@ return {
 			local prettier = { "prettierd", "prettier", sto_after_first = true }
 			local conform = require("conform")
 			conform.setup({
+				formatters = {
+					biome = {
+						require_cwd = true,
+					},
+				},
 				formatters_by_ft = {
 					lua = { "stylua" },
 					markdown = prettier,
-					javascript = prettier,
-					javascriptreact = prettier,
-					typescript = prettier,
-					typescriptreact = prettier,
+					javascript = { "prettierd", "prettier", sto_after_first = true },
+					javascriptreact = { "prettierd", "prettier", sto_after_first = true },
+					typescript = { "biome", "prettierd", "prettier", sto_after_first = true },
+					typescriptreact = { "biome", "prettierd", "prettier", sto_after_first = true },
 					vue = prettier,
-					json = prettier,
-					jsonc = prettier,
+					json = { "biome", "prettierd", "prettier", sto_after_first = true },
+					jsonc = { "biome", "prettierd", "prettier", sto_after_first = true },
 				},
 			})
 			vim.keymap.set("n", "<leader>cf", function(args)

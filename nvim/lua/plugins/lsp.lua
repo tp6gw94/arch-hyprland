@@ -50,6 +50,8 @@ return {
 				"markdown_oxide",
 				"zk",
 				"cssls",
+				"biome",
+				"jsonls"
 			})
 		end,
 	},
