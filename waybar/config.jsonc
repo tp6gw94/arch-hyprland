@@ -61,8 +61,9 @@
   "clock": {
     "timezone": "Asia/Taipei",
     "tooltip": true,
-    "format": "{:%H:%M}  ",
-    "format-alt": "{:%A, %B %d, %Y (%R)}  ",
+    // "format": "{:%H:%M}  ",
+    "format": "{:%A, %B %d, %Y (%R)}  ",
+    // "format-alt": "{:%A, %B %d, %Y (%R)}  ",
     "tooltip-format": "\n<span size='9pt' font='Google Sans Code'>{calendar}</span>",
     "calendar": {
       "mode": "year",
@@ -154,7 +155,7 @@
     "on-click": "blueberry",
   },
   "mpris": {
-    "format": "| {player_icon} {title}",
+    "format": " {player_icon} {title}",
     "format-paused": "{status_icon} <i>{title}</i>",
     "max-length": 15,
     "player-icons": {

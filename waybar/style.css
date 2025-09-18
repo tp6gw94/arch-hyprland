@@ -1,81 +1,305 @@
-@define-color foreground #575279;
+@define-color foreground #393552;
 @define-color background #faf4ed;
+@define-color primary #1e5173;
+@define-color secondary #9d79d6;
+@define-color accent #2d7aa2;
+@define-color success #56b6c2;
+@define-color warning #d19a66;
+@define-color critical #e06c75;
 
 * {
-  background-color: @background;
-  color: @foreground;
-
   border: none;
   border-radius: 0;
   min-height: 0;
-  font-family: CaskaydiaMono Nerd Font;
-  font-size: 16px;
+  font-family: "CaskaydiaMono Nerd Font", "JetBrainsMono Nerd Font";
+  font-size: 13px;
+  font-weight: bold;
 }
 
-.modules-left {
-  margin-left: 8px;
+window#waybar {
+  background: transparent;
+  color: @foreground;
 }
 
-.modules-right {
-  margin-right: 8px;
+tooltip {
+  background: @background;
+  color: @foreground;
+  border-radius: 8px;
+  border: 1px solid @primary;
+  padding: 4px 6px;
 }
 
-#window {
-  margin: 0 4px;
-	font-weight: bold;
+tooltip label {
+  color: @foreground;
+}
+
+/* Workspaces */
+#workspaces {
+  background: transparent;
+  padding: 0 2px;
+  margin: 4px 2px;
 }
 
 #workspaces button {
-  all: initial;
-  padding: 0 6px;
-  margin: 0 1.5px;
-  min-width: 9px;
+  background: @background;
+  color: @foreground;
+  padding: 2px 6px;
+  margin: 0 2px;
+  min-width: 20px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 #workspaces button.empty {
-  opacity: 0.5;
+  opacity: 0.4;
+  background: rgba(250, 244, 237, 0.6);
 }
 
+#workspaces button.active {
+  color: @background;
+  background: @primary;
+  box-shadow: 0 2px 4px rgba(30, 81, 115, 0.3);
+}
+
+#workspaces button.focused {
+  color: @background;
+  background: @secondary;
+  box-shadow: 0 2px 4px rgba(157, 121, 214, 0.3);
+}
+
+#workspaces button.urgent {
+  background: @critical;
+  color: @background;
+  animation: blink 0.5s linear infinite alternate;
+  box-shadow: 0 2px 4px rgba(224, 108, 117, 0.3);
+}
+
+#workspaces button:hover {
+  background: @accent;
+  color: @background;
+  box-shadow: 0 3px 6px rgba(45, 122, 162, 0.4);
+}
+
+/* Window Title */
+#window {
+  background: @background;
+  padding: 0 8px;
+  margin: 4px 2px;
+  border-radius: 8px;
+  font-weight: bold;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+#window:hover {
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* System Modules */
 #tray,
 #cpu,
 #custom-cpu,
 #battery,
 #network,
 #bluetooth,
+#pulseaudio,
+#clock,
+#backlight,
+#mpris {
+  background: @background;
+  padding: 0 8px;
+  margin: 4px 2px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+#tray:hover,
+#cpu:hover,
+#custom-cpu:hover,
+#battery:hover,
+#network:hover,
+#bluetooth:hover,
+#pulseaudio:hover,
+#clock:hover,
+#backlight:hover,
+#mpris {
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+  background: rgba(250, 244, 237, 0.95);
+}
+
+/* Clock */
+#clock {
+  color: @primary;
+  font-weight: bold;
+  margin: 4px 4px;
+}
+
+/* Network */
+#network {
+  color: @success;
+}
+
+#network.ethernet {
+  color: @accent;
+}
+
+#network.wifi {
+  color: @success;
+}
+
+#network.disabled,
+#network.disconnected {
+  color: @critical;
+  opacity: 0.7;
+}
+
+/* Bluetooth */
+#bluetooth {
+  color: @accent;
+}
+
+#bluetooth.connected {
+  color: @primary;
+}
+
+#bluetooth.discovering {
+  color: @warning;
+}
+
+/* Audio */
 #pulseaudio {
-  min-width: 12px;
-  margin: 0 7.5px;
+  color: @primary;
 }
 
-#custom-expand-icon {
-  margin-right: 7px;
+#pulseaudio.muted {
+  color: @critical;
+  opacity: 0.7;
 }
 
-#custom-screenshot-icon {
-  margin-right: 7px;
+#pulseaudio.microphone {
+  color: @secondary;
+}
+
+/* Battery */
+#battery {
+  color: @success;
+}
+
+#battery.charging {
+  color: @primary;
+}
+
+#battery.warning {
+  color: @warning;
+}
+
+#battery.critical {
+  color: @critical;
+  animation: blink 0.5s linear infinite alternate;
+}
+
+/* CPU & Temperature */
+#cpu,
+#custom-cpu {
+  color: @accent;
+}
+
+#temperature {
+  color: @success;
+}
+
+#temperature.critical {
+  color: @critical;
+}
+
+/* Backlight */
+#backlight {
+  color: @warning;
+}
+
+/* Custom Modules */
+#custom-expand-icon,
+#custom-screenshot-icon,
+#custom-screenrec-toggle {
+  background: @background;
+  padding: 0 6px;
+  margin: 4px 2px;
+  border-radius: 8px;
+  color: @secondary;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+#custom-expand-icon:hover,
+#custom-screenshot-icon:hover,
+#custom-screenrec-toggle:hover {
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+  background: @secondary;
+  color: @background;
 }
 
 #custom-screenshot-window,
 #custom-screenshot-output,
-#custom-screenshot-region,
-#custom-screenrec-toggle {
-  min-width: 12px;
-  margin: 0 4px;
-  padding: 0 2px;
+#custom-screenshot-region {
+  background: @background;
+  padding: 0 6px;
+  margin: 4px 2px;
+  border-radius: 8px;
+  color: @accent;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-#custom-screenrec-toggle {
-  margin-right: 7px;
+#custom-screenshot-window:hover,
+#custom-screenshot-output:hover,
+#custom-screenshot-region:hover {
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+  background: @accent;
+  color: @background;
 }
 
-tooltip {
-  padding: 2px;
+#custom-launch_wofi {
+  background: @background;
+  padding: 0 8px;
+  margin: 4px 2px;
+  border-radius: 8px;
+  color: @accent;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-#clock {
-  margin: 0 8.75px;
+#custom-launch_wofi:hover {
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+  background: @accent;
+  color: @background;
 }
 
+#custom-power_profile {
+  background: @background;
+  padding: 0 8px;
+  margin: 4px 2px;
+  border-radius: 8px;
+  color: @success;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+#custom-power_profile:hover {
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+  background: @success;
+  color: @background;
+}
+
+/* Animations */
+@keyframes blink {
+  to {
+    opacity: 0.5;
+  }
+}
+
+/* Hidden state */
 .hidden {
   opacity: 0;
 }
