@@ -15,7 +15,7 @@ elif [ "$1" == "toggle" ] || [ -z "$1" ]; then
     # Toggle between configurations
     if [ -L "$CURRENT_CONFIG" ]; then
         CURRENT=$(readlink "$CURRENT_CONFIG")
-        if [[ "$CURRENT" == *"home"* ]]; then
+        if [[ "$CURRENT" == *"monitors-home.conf" ]]; then
             ln -sf "$HYPR_DIR/monitors-work.conf" "$CURRENT_CONFIG"
             echo "💼 Switched to WORK monitor configuration"
         else
@@ -30,7 +30,7 @@ elif [ "$1" == "toggle" ] || [ -z "$1" ]; then
 elif [ "$1" == "status" ]; then
     if [ -L "$CURRENT_CONFIG" ]; then
         CURRENT=$(readlink "$CURRENT_CONFIG")
-        if [[ "$CURRENT" == *"home"* ]]; then
+        if [[ "$CURRENT" == *"monitors-home.conf" ]]; then
             echo "Current: 🏠 HOME"
         else
             echo "Current: 💼 WORK"
