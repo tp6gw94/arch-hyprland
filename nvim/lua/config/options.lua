@@ -10,7 +10,7 @@ vim.opt.statuscolumn = "%l%s"
 vim.o.swapfile = false
 
 -- Text wrapping
-vim.opt.wrap = false
+vim.opt.wrap = true
 
 -- Indentation
 vim.o.shiftwidth = 4

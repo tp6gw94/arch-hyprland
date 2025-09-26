@@ -145,10 +145,10 @@ return {
 			bold = true,
 		})
 
-		vim.api.nvim_set_hl(0, "MiniFilesCursorLine", {
-			bg = "#0366d6",
-			fg = "#ffffff",
-		})
+		-- vim.api.nvim_set_hl(0, "MiniFilesCursorLine", {
+		-- 	bg = "#0366d6",
+		-- 	fg = "#ffffff",
+		-- })
 
 		vim.api.nvim_set_hl(0, "MiniFilesDirectory", {
 			fg = "#6f42c1",
@@ -219,18 +219,32 @@ return {
 			desc = "Find Buffer",
 		},
 		{
-			"<leader>/",
+			"<C-f>",
 			function()
-				require("mini.extra").pickers.buf_lines()
+				require("mini.extra").pickers.buf_lines({ scope = "current" })
 			end,
 			desc = "Search Current Buffer Line",
 		},
 		{
-			"<leader>lg",
+			"<C-F>",
+			function()
+				require("mini.extra").pickers.buf_lines()
+			end,
+			desc = "Search All Buffer Line",
+		},
+		{
+			"<leader>s",
 			function()
 				require("mini.pick").builtin.grep_live()
 			end,
 			desc = "Grep",
+		},
+		{
+			"<leader>S",
+			function()
+				require("mini.pick").builtin.grep()
+			end,
+			desc = "Grep Live",
 		},
 		{
 			"<leader>'",
@@ -240,11 +254,46 @@ return {
 			desc = "Resume picker",
 		},
 		{
-			"<C-p>",
+			"<leader>ph",
+			function()
+				require("mini.pick").builtin.help()
+			end,
+			desc = "Help",
+		},
+		{
+			"<leader>pk",
+			function()
+				require("mini.extra").pickers.keymaps()
+			end,
+			desc = "Keymaps",
+		},
+		{
+			"<leader>pc",
 			function()
 				require("mini.extra").pickers.commands()
 			end,
 			desc = "Command picker",
+		},
+		{
+			"<leader>gm",
+			function()
+				require("mini.extra").pickers.git_files({ scope = "modified" })
+			end,
+			desc = "Pick git modified files",
+		},
+		{
+			"<leader>gu",
+			function()
+				require("mini.extra").pickers.git_files({ scope = "untracked" })
+			end,
+			desc = "Pick git untracked files",
+		},
+		{
+			"<leader>gh",
+			function()
+				require("mini.extra").pickers.git_hunks()
+			end,
+			desc = "Pick git hunks",
 		},
 	},
 }

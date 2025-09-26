@@ -47,12 +47,18 @@ return {
 				"vue_ls",
 				"eslint",
 				"tailwindcss",
-				"markdown_oxide",
-				"zk",
 				"cssls",
 				"biome",
-				"jsonls"
+				"jsonls",
+				"marksman",
+				"harper_ls",
 			})
 		end,
 	},
+	{
+			"windwp/nvim-ts-autotag",
+			config = function ()
+				require('nvim-ts-autotag').setup()	
+			end
+	}
 }

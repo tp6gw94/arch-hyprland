@@ -9,40 +9,16 @@ return {
 		},
 		keys = {
 			-- suggested keymap
-			{ "<leader>p", "<cmd>PasteImage<cr>", desc = "Paste image from system clipboard" },
+			{ "<C-p>", "<cmd>PasteImage<cr>", desc = "Paste image from system clipboard" },
 		},
 	},
 	{
-		"OXY2DEV/markview.nvim",
-		lazy = false,
-		-- For `nvim-treesitter` users.
-		priority = 49,
-		-- For blink.cmp's completion
-		-- source
-		dependencies = {
-			"saghen/blink.cmp",
+		"MeanderingProgrammer/render-markdown.nvim",
+		---@module 'render-markdown'
+		---@type render.md.UserConfig
+		opts = {
+			completions = { lsp = { enabled = true } },
 		},
-		config = function()
-			local presets = require("markview.presets")
-
-			require("markview").setup({
-				markdown = {
-					headings = {
-						heading_1 = { icon = "[%d] " },
-						heading_2 = { icon = "[%d.%d] " },
-						heading_3 = { icon = "[%d.%d.%d] " },
-					},
-					horizontal_rules = presets.horizontal_rules.thick,
-					tables = presets.tables.rounded,
-					code_blocks = {
-						sign = false,
-					},
-				},
-			})
-			require("markview.extras.checkboxes").setup()
-			require("markview.extras.headings").setup()
-			require("markview.extras.editor").setup()
-		end,
 	},
 	{
 		"iamcco/markdown-preview.nvim",
@@ -52,5 +28,36 @@ return {
 			vim.g.mkdp_filetypes = { "markdown" }
 		end,
 		ft = { "markdown" },
+	},
+	{
+		"obsidian-nvim/obsidian.nvim",
+		version = "*", -- recommended, use latest release instead of latest commit
+		---@module 'obsidian'
+		---@type obsidian.config
+		opts = {
+			legacy_commands = false,
+			ui = {
+				enable = false,
+			},
+			workspaces = {
+				{
+					name = "personal",
+					path = "~/vaults/personal",
+				},
+				{
+					name = "work",
+					path = "~/vaults/work",
+				},
+			},
+		},
+		config = function(_, opts)
+			require("obsidian").setup(opts)
+
+			vim.keymap.set("n", "<leader>os", "<CMD>Obsidian search<CR>")
+			vim.keymap.set("n", "<leader>ow", "<CMD>Obsidian workspace<CR>")
+			vim.keymap.set("n", "<leader>on", "<CMD>Obsidian new_from_template<CR>")
+			vim.keymap.set("n", "<leader>ot", "<CMD>Obsidian today<CR>")
+			vim.keymap.set("n", "<leader>om", "<CMD>Obsidian<CR>")
+		end,
 	},
 }

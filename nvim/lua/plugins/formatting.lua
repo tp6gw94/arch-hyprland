@@ -17,7 +17,7 @@ return {
 					markdown = prettier,
 					javascript = { "prettierd", "prettier", sto_after_first = true },
 					javascriptreact = { "prettierd", "prettier", sto_after_first = true },
-					typescript = { "biome", "prettierd", "prettier", sto_after_first = true },
+					typescript = { "biome", "prettierd", "prettier", sto_after_first = true, lsp_format = "fallback" },
 					typescriptreact = { "biome", "prettierd", "prettier", sto_after_first = true },
 					vue = prettier,
 					json = { "biome", "prettierd", "prettier", sto_after_first = true },
